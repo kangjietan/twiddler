@@ -50,7 +50,6 @@
           //$body.html('');
 
         var index = streams.home.length - 1;
-        console.log(index);
         while(index > idx){
           var dt = new Date();
           var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
@@ -67,7 +66,7 @@
 
           index -= 1;
         }
-        idx = streams.home.length - 1;
+        idx = streams.home.length - 1; // Current index of tweets
       };
 
       generateTweets(); // call it once to generate tweets
