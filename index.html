@@ -11,6 +11,7 @@
 
     <header>
       <h1 class="title">TWIDDLER</h1>
+      <button id="test">test</button>
     </header>
 
     <section class="tweeting">
@@ -29,10 +30,21 @@
 
     <!--Tweets-->
     <script>
+      function userHide(user) {
+        var tweets = document.getElementsByClassName("userTweet"); // gather all tweets
+        for (var i = 0; i < tweets.length; i++) {
+          var userTweets = tweets[i].innerText.split("\n"); // split on new line (<br>)
+          var currentUser = "@" + user.toString(); // parse to string to compare
+          if (currentUser !== userTweets[0].toString()) {
+            //tweets[i].hide();
+            tweets[i].style.display = "none"; // hide() didn't work
+          }
+        }
+      };
 
       $(document).ready(function(){
         // Generate tweets, the feed
-        var generateTweets = function() {
+        function generateTweets() {
           var $body = $('body #container');
           $body.html('');
 
@@ -40,18 +52,28 @@
         while(index >= 0){
           var dt = new Date();
           var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+
           var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.html('@' + tweet.user + '<br>' + tweet.message + "<br>" + time);
+          var $tweet = $('<div class=userTweet></div>');
+
+          $tweet.html("@" + "<a href=javascript:userHide('"+tweet.user+"');>" + tweet.user + "</a> <br>" + tweet.message + "<br>" + time);
           $tweet.css("border-bottom", "1px solid black");
           $tweet.appendTo($body);
+
           index -= 1;
         }
+
       };
+
       generateTweets(); // call it once to generate tweets
 
       $("#btn1").on("click", function() { // On click, generate new tweets
+        $("body #container").empty();
         generateTweets();
+      });
+      
+      $("#test").on("click", function() {
+        $("body #container").html("");
       });
 
       });
